@@ -1,0 +1,40 @@
+<?php
+
+namespace WebcrawlerCMDBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Link
+ *
+ * @ORM\Table(name="link")
+ * @ORM\Entity
+ */
+class Link
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="location", type="string", length=100, nullable=false)
+     */
+    private $location;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="visitCount", type="integer", nullable=false)
+     */
+    private $visitcount;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+
+}
+

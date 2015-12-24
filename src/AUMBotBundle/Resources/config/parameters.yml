@@ -1,0 +1,7 @@
+aum_bot:
+    step_login:
+        login: 
+        password: 
+    step_visit:
+        max_visit: 3
+        waiting_second: 6

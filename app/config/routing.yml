@@ -1,0 +1,3 @@
+aum_bot:
+    resource: "@AUMBotBundle/Resources/config/routing.yml"
+    prefix:   /

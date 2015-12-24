@@ -1,0 +1,62 @@
+services:
+    aum_bot.service_link:
+        class: AUMBotBundle\Service\LinkService
+        calls:
+            - [setEm, ['@doctrine.orm.entity_manager']]
+            
+    aum_bot.selenium_driver:
+        class: Behat\Mink\Driver\Selenium2Driver
+        
+    aum_bot.crawler:
+        class: Behat\Mink\Session
+        arguments: ['@aum_bot.selenium_driver']
+    
+    aum_bot.step_abstract:
+        abstract: true
+        arguments: ['@aum_bot.crawler', '@logger']
+        
+    aum_bot.step_login:
+        class: AUMBotBundle\Step\LoginStep
+        parent: aum_bot.step_abstract
+        calls:
+            - [setParameters, ['%aum_bot%']]
+        
+    aum_bot.step_search:
+        class: AUMBotBundle\Step\SearchStep
+        parent: aum_bot.step_abstract
+        
+    aum_bot.step_result:
+        class: AUMBotBundle\Step\ResultStep
+        parent: aum_bot.step_abstract
+        calls:
+            - [setLinkService, ['@aum_bot.service_link']]
+            
+    aum_bot.step_visit:
+        class: AUMBotBundle\Step\VisitStep
+        parent: aum_bot.step_abstract
+        calls:
+            - [setParameters, ['%aum_bot%']]
+            - [setLinkService, ['@aum_bot.service_link']]
+        
+    aum_bot.step_disconnect:
+        class: AUMBotBundle\Step\DisconnectStep
+        parent: aum_bot.step_abstract
+        
+    aum_bot.step_runner:
+        class: AUMBotBundle\StepRunner
+        arguments: ['@aum_bot.crawler', '@logger']
+        calls:
+            - [addStep, ['@aum_bot.step_login']]
+            - [addStep, ['@aum_bot.step_search']]
+            - [addStep, ['@aum_bot.step_result']]
+            - [addStep, ['@aum_bot.step_visit']]
+            - [addStep, ['@aum_bot.step_disconnect']]
+    
+    aum_bot.step_runner_visit:
+        class: AUMBotBundle\StepRunner
+        arguments: ['@aum_bot.crawler', '@logger']
+        calls:
+            - [addStep, ['@aum_bot.step_login']]
+            - [addStep, ['@aum_bot.step_visit']]
+            - [addStep, ['@aum_bot.step_disconnect']]
+        
